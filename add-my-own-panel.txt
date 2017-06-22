@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Street View side-by-side</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map, #pano {
+        float: left;
+        height: 100%;
+        width: 45%;
+      }
+     #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+      #pano {
+        width: 50%;
+        height: 100%;
+        float: left;
+      }
+      #floating-panel {
+        width: 45%;
+        height: 100%;
+        float: right;
+        text-align: left;
+        overflow: auto;
+        position: static;
+        border: 0px solid #999;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="pano"></div>
+<div id="floating-panel">
+    <table>
+      <tr>
+        <td><b>Position</b></td><td id="position-cell">&nbsp;</td>
+      </tr>
+      <tr>
+        <td><b>POV Heading</b></td><td id="heading-cell">270</td>
+      </tr>
+      <tr>
+        <td><b>POV Pitch</b></td><td id="pitch-cell">0.0</td>
+      </tr>
+      <tr>
+        <td><b>Pano ID</b></td><td id="pano-cell">&nbsp;</td>
+      </tr>
+      <table id="links_table"></table>
+    </table>
+    <script>
+
+      function initialize() {
+        var fenway = {lat: 42.345573, lng: -71.098326};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: fenway,
+          zoom: 14
+        });
+        var panorama = new google.maps.StreetViewPanorama(
+            document.getElementById('pano'), {
+              position: fenway,
+              pov: {
+                heading: 34,
+                pitch: 10
+              }
+            });
+        map.setStreetView(panorama);
+      }
+
+function initPano() {
+        var panorama = new google.maps.StreetViewPanorama(
+            document.getElementById('pano'), {
+              position: {lat: 37.869, lng: -122.255},
+              pov: {
+                heading: 270,
+                pitch: 0
+              },
+              visible: true
+        });
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAC4kXIhkfQCR3Mv0-eUD-i500s__mwElk&callback=initialize">
+    </script>
+  </body>
+</html>
