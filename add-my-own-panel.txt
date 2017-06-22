@@ -5,14 +5,18 @@
 		<title>Street View Add Third Panel</title>
 		<style>
 			html, body {
-			height: 100%;
-			margin: 0;
-			padding: 0;
+				height: 100%;
+				margin: 0;
+				padding: 0;
 			}
-			#map, #pano {
+			#map {
 				float: left;
 				height: 100%;
 				width: 45%;
+			}
+			#pano {
+				width: 50%;
+				height: 100%;
 			}
 			#floating-panel {
 				position: absolute;
@@ -26,11 +30,6 @@
 				font-family: 'Roboto','sans-serif';
 				line-height: 30px;
 				padding-left: 10px;
-			}
-			#pano {
-				width: 50%;
-				height: 100%;
-				float: left;
 			}
 			#floating-panel {
 				width: 45%;
@@ -49,16 +48,16 @@
 		<div id="floating-panel">
 		<table>
 			<tr>
-				<td><b>Position</b></td><td id="position-cell">&nbsp;</td>
+				<td><b>Turn Left</b></td><td id="position-cell">&nbsp;</td>
 			</tr>
 			<tr>
-				<td><b>POV Heading</b></td><td id="heading-cell">270</td>
+				<td><b>Turn Right</b></td><td id="heading-cell">270</td>
 			</tr>
 			<tr>
-				<td><b>POV Pitch</b></td><td id="pitch-cell">0.0</td>
+				<td><b>Skip Forward</b></td><td id="pitch-cell">0.0</td>
 			</tr>
 			<tr>
-				<td><b>Pano ID</b></td><td id="pano-cell">&nbsp;</td>
+				<td><b>Skip Back</b></td><td id="pano-cell">&nbsp;</td>
 			</tr>
 			<table id="links_table"></table>
 		</table>
