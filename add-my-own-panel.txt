@@ -60,8 +60,8 @@
 	
 	// TURN LEFT
 	function TurnLeft(turnLeftControlDiv, map) {
-
-        // Set CSS for the control border.
+	
+		// Set CSS for the control border.
         var turnLeftControlUI = document.createElement('div');
         turnLeftControlUI.style.backgroundColor = '#fff';
         turnLeftControlUI.style.border = '2px solid #fff';
@@ -83,9 +83,15 @@
         turnLeftControlText.style.paddingRight = '5px';
         turnLeftControlText.innerHTML = 'Turn Left';
         turnLeftControlUI.appendChild(turnLeftControlText);
-			
+		
+		var heading = map.getHeading() || 0;
+		turnLeftControlUI.addEventListener('click', function() {
+			map.setHeading(heading + 1);
+        });
 
 	}
+	
+	TurnLeft(turnLeftControlDiv, map); 
 	
 	// TURN RIGHT
 	function TurnRight(turnRightControlDiv, map) {
@@ -113,6 +119,10 @@
         turnRightControlText.innerHTML = 'Turn Right';
         turnRightControlUI.appendChild(turnRightControlText);
 			
+		var heading = map.getHeading() || 0;
+		turnRightControlUI.addEventListener('click', function() {
+			map.setHeading(heading + 1);
+        });
 
 	}
 	
@@ -141,6 +151,11 @@
         goForwardControlText.style.paddingRight = '5px';
         goForwardControlText.innerHTML = 'Go Forward';
         goForwardControlUI.appendChild(goForwardControlText);
+		
+		var heading = map.getHeading() || 0;
+		goForwardControlUI.addEventListener('click', function() {
+			map.setHeading(heading + 1);
+        });
 			
 
 	}
@@ -170,6 +185,11 @@
         goBackControlText.style.paddingRight = '5px';
         goBackControlText.innerHTML = 'Go Backward';
         goBackControlUI.appendChild(goBackControlText);
+		
+		var heading = map.getHeading() || 0;
+		goBackControlUI.addEventListener('click', function() {
+			map.setHeading(heading + 1);
+        });
 			
 
 	}
