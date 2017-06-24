@@ -57,6 +57,37 @@
 		</table></div>
 		<div id="pano"></div>
     <script>
+	function TurnLeft(turnLeftControlDiv, map) {
+
+        // Set CSS for the control border.
+        var turnLeftControlUI = document.createElement('div');
+        turnLeftControlUI.style.backgroundColor = '#fff';
+        turnLeftControlUI.style.border = '2px solid #fff';
+        turnLeftControlUI.style.borderRadius = '3px';
+        turnLeftControlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        turnLeftControlUI.style.cursor = 'pointer';
+        turnLeftControlUI.style.marginBottom = '22px';
+        turnLeftControlUI.style.textAlign = 'center';
+        turnLeftControlUI.title = 'Click to turn left';
+        turnLeftControlDiv.appendChild(turnLeftControlUI);
+
+        // Set CSS for the control interior.
+        var turnLeftControlText = document.createElement('div');
+        turnLeftControlText.style.color = 'rgb(25,25,25)';
+        turnLeftControlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        turnLeftControlText.style.fontSize = '16px';
+        turnLeftControlText.style.lineHeight = '38px';
+        turnLeftControlText.style.paddingLeft = '5px';
+        turnLeftControlText.style.paddingRight = '5px';
+        turnLeftControlText.innerHTML = 'Turn Left';
+        turnLeftControlUI.appendChild(turnLeftControlText);
+			
+
+	}
+	
+	
+	
+	
 	function initialize() {
 		var fenway = {lat: 42.345573, lng: -71.098326};
 		var map = new google.maps.Map(document.getElementById('map'), {
@@ -104,7 +135,18 @@
 			headingCell.firstChild.nodeValue = panorama.getPov().heading + '';
 			pitchCell.firstChild.nodeValue = panorama.getPov().pitch + '';
 		});
+		
+		
+		
+		// Create DIV 
+        var turnLeftControlDiv = document.createElement('div');
+        var turnLeftControl = new TurnLeft(turnLeftControlDiv, map);
+
+        turnLeftControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(turnLeftControlDiv);
 	}
+	
+	
     </script>
     <script async defer
         src="http://maps.googleapis.com/maps/api/js?callback=initialize">
