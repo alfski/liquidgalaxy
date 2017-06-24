@@ -57,6 +57,8 @@
 		</table></div>
 		<div id="pano"></div>
     <script>
+	
+	// TURN LEFT
 	function TurnLeft(turnLeftControlDiv, map) {
 
         // Set CSS for the control border.
@@ -81,6 +83,35 @@
         turnLeftControlText.style.paddingRight = '5px';
         turnLeftControlText.innerHTML = 'Turn Left';
         turnLeftControlUI.appendChild(turnLeftControlText);
+			
+
+	}
+	
+	// TURN RIGHT
+	function TurnRight(turnRightControlDiv, map) {
+
+        // Set CSS for the control border.
+        var turnRightControlUI = document.createElement('div');
+        turnRightControlUI.style.backgroundColor = '#fff';
+        turnRightControlUI.style.border = '2px solid #fff';
+        turnRightControlUI.style.borderRadius = '3px';
+        turnRightControlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        turnRightControlUI.style.cursor = 'pointer';
+        turnRightControlUI.style.marginBottom = '22px';
+        turnRightControlUI.style.textAlign = 'center';
+        turnRightControlUI.title = 'Click to turn left';
+        turnRightControlDiv.appendChild(turnRightControlUI);
+
+        // Set CSS for the control interior.
+        var turnRightControlText = document.createElement('div');
+        turnRightControlText.style.color = 'rgb(25,25,25)';
+        turnRightControlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        turnRightControlText.style.fontSize = '16px';
+        turnRightControlText.style.lineHeight = '38px';
+        turnRightControlText.style.paddingLeft = '5px';
+        turnRightControlText.style.paddingRight = '5px';
+        turnRightControlText.innerHTML = 'Turn Right';
+        turnRightControlUI.appendChild(turnRightControlText);
 			
 
 	}
@@ -138,12 +169,19 @@
 		
 		
 		
-		// Create DIV 
+		// TURN LEFT INIT
         var turnLeftControlDiv = document.createElement('div');
         var turnLeftControl = new TurnLeft(turnLeftControlDiv, map);
 
         turnLeftControlDiv.index = 1;
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(turnLeftControlDiv);
+		
+		// TURN RIGHT INIT
+		var turnRightControlDiv = document.createElement('div');
+        var turnRightControl = new TurnRight(turnRightControlDiv, map);
+
+        turnRightControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(turnRightControlDiv);
 	}
 	
 	
