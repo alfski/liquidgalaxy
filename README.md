@@ -5,7 +5,7 @@ USC Viterbi, Computer Science and Business Administration, Class of 2019
 
 The code in this repo is public code from my summer project with Google's Liquid Galaxy. 
 
-Code written in JavaScript. 
+Code written in JavaScript and HTML. 
 
 You will need to enable Google Maps API. Click here to get your API key: 
 https://developers.google.com/maps/documentation/javascript/get-api-key
