@@ -42,19 +42,22 @@
 				<td><b>Pano ID</b></td><td id="pano-cell">&nbsp;</td>
 			</tr>
 			<tr>
-				<td><b>Turn Left</b></td><td id="">&nbsp;</td>
+				<input type="button" value="Turn Left" onclick="changeHeading(-5);">
 			</tr>
 			<tr>
-				<td><b>Turn Right</b></td><td id="">&nbsp;</td>
+				<input type="button" value="Turn Right" onclick="changeHeading(-5);">
 			</tr>
 			<tr>
-				<td><b>Skip Forward</b></td><td id="">&nbsp;</td>
+				<input type="button" value="Go Forward" onclick="changeHeading(-5);">
 			</tr>
 			<tr>
-				<td><b>Skip Back</b></td><td id="">&nbsp;</td>
+				<input type="button" value="Go Backward" onclick="changeHeading(-5);">
 			</tr>
 			<table id="links_table"></table>
 		</table></div>
+		
+
+		
 		<div id="pano"></div>
     <script>
 	
