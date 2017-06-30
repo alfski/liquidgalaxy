@@ -21,7 +21,7 @@
 			#floating-panel {
 				float: right;
 				width: 50%;
-				height: 50%;
+				height: 20%;
 			}
 		</style>
 	</head>
@@ -41,6 +41,12 @@
 			<tr>
 				<td><b>Pano ID</b></td><td id="pano-cell">&nbsp;</td>
 			</tr>
+		</table></div>
+		<p>
+			Push some buttons to explore Maps!
+		</p>
+		<div id="floating-panel">
+		<table>
 			<tr>
 				<input type="button" value="Turn Left" onclick="changeHeading(-90);">
 			</tr>
@@ -122,7 +128,6 @@
 		panorama.setPano(markerPanoID);
 		panorama.setVisible(true); 
 
-		//need to actually change the panorama with this info 
 	}
 	
 	/*function getForwardLink() {
