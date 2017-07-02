@@ -54,7 +54,7 @@
 				<input type="button" value="Turn Right" onclick="changeHeading(90);">
 			</tr>
 			<tr>
-				<input type="button" value="Go Forward" onclick="changeHeading(-5);">
+				<input type="button" value="Go Forward" onclick="moveForward();">
 			</tr>
 			<tr>
 				<input type="button" value="Go Backward" onclick="changeHeading(-5);">
@@ -130,23 +130,23 @@
 
 	}
 	
-	/*function getForwardLink() {
+	function getForwardLink() {
 		var pov = panorama.getPov();
 		var links = panorama.getLinks();
 		var len = links.length;
 		var nearest = null;		// pano id closest to facing
 		var nearest_difference = 360;
-	 
+		
 		for(var i=0; i<len; i++) {
-			  var link = links[i];
-			  var difference = getLinkDifference(pov.heading, link.heading);
-			  // console.log(difference, link);
-			  if (difference < nearest_difference) {
-				  nearest = link;
-				  nearest_difference = difference;
-			  } 
+			var link = links[i];
+			var difference = getLinkDifference(pov.heading, link.heading);
+			console.log(difference, link);
+			if (difference < nearest_difference) {
+				nearest = link;
+				nearest_difference = difference;
+			} 
 		}
-	 
+		
 		return nearest;
 	}
 	
@@ -154,7 +154,13 @@
 		var diff = Math.abs(link_heading - pov_heading) % 360;
 	 
 		return diff >= 180 ? diff - (diff - 180) * 2 : diff;
-	}*/
+	}
+	
+	function moveForward(){
+		var nearest = getForwardLink(); 
+		panorama.setPano(nearest); 
+		panorama.setVisible(true); 
+	}
 
 	//function getBackwardLink(){
 	//}
