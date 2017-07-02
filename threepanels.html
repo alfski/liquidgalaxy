@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Street View Add Third Panel</title>
+		<title>Three Panels</title>
 		<style>
 			html, body {
 				height: 100%;
@@ -21,7 +21,7 @@
 			#floating-panel {
 				float: right;
 				width: 50%;
-				height: 50%;
+				height: 20%;
 			}
 		</style>
 	</head>
@@ -30,7 +30,7 @@
 		<div id="floating-panel">
 		<table>
 			<tr>
-				<td><b>Position</b></td><td id="position-cell">&nbsp;</td>
+				<td><b>Lat,Long Pos</b></td><td id="position-cell">&nbsp;</td>
 			</tr>
 			<tr>
 				<td><b>POV Heading</b></td><td id="heading-cell">270</td>
@@ -41,31 +41,38 @@
 			<tr>
 				<td><b>Pano ID</b></td><td id="pano-cell">&nbsp;</td>
 			</tr>
+		</table></div>
+		<div id="floating-panel">
+		<table>
 			<tr>
-				<td><b>Turn Left</b></td><td id="">&nbsp;</td>
+				<input type="button" value="Turn Left" onmouseover="moveHeading(-0.2)" onmouseout="stopHeading()">
 			</tr>
 			<tr>
-				<td><b>Turn Right</b></td><td id="">&nbsp;</td>
+				<input type="button" value="Turn Right" onmouseover="moveHeading(0.2)" onmouseout="stopHeading()">
 			</tr>
 			<tr>
-				<td><b>Skip Forward</b></td><td id="">&nbsp;</td>
+				<input type="button" value="Go Forward" onclick="moveForward()">
 			</tr>
 			<tr>
-				<td><b>Skip Back</b></td><td id="">&nbsp;</td>
+				<input type="button" value="Go Backward" onclick="moveBackward()">
 			</tr>
 			<table id="links_table"></table>
 		</table></div>
+		
 		<div id="pano"></div>
     <script>
-
+	
+	var panorama, headingTimer = null;
+	
 	function initialize() {
+
 		var fenway = {lat: 42.345573, lng: -71.098326};
 		var map = new google.maps.Map(document.getElementById('map'), {
 			center: fenway,
 			zoom: 14
 		});
 
-		var panorama = new google.maps.StreetViewPanorama(
+		panorama = new google.maps.StreetViewPanorama(
 			document.getElementById('pano'), {
 				position: fenway,
 				pov: {
@@ -73,13 +80,13 @@
 					pitch: 10
 				}
 			});
+
 		map.setStreetView(panorama);
 		
 		panorama.addListener('pano_changed', function() {
 			var panoCell = document.getElementById('pano-cell');
 			panoCell.innerHTML = panorama.getPano();
 		});
-
 		panorama.addListener('links_changed', function() {
 			var linksTable = document.getElementById('links_table');
 			while (linksTable.hasChildNodes()) {
@@ -97,22 +104,74 @@
 				linksTable.appendChild(valueCell);
 			}
 		});
-
 		panorama.addListener('position_changed', function() {
 			var positionCell = document.getElementById('position-cell');
 			positionCell.firstChild.nodeValue = panorama.getPosition() + '';
 		});
-
 		panorama.addListener('pov_changed', function() {
 			var headingCell = document.getElementById('heading-cell');
 			var pitchCell = document.getElementById('pitch-cell');
 			headingCell.firstChild.nodeValue = panorama.getPov().heading + '';
 			pitchCell.firstChild.nodeValue = panorama.getPov().pitch + '';
 		});
+
 	}
+	
+	function moveHeading( delta ) {
+		clearTimeout( headingTimer );
+		headingTimer = setInterval( function(){ changeHeading( delta )}, 1000/60 );
+        }
+	function stopHeading() {
+		clearTimeout( headingTimer);
+        }
+	function changeHeading( delta ) {
+		var heading = panorama.getPov().heading;
+		panorama.setPov({ heading: heading + delta, pitch: 0 });
+	}
+
+	function moveForward() {
+		console.log("go forward...");
+		// find most forward link
+		// set panorama to forward link
+	}
+
+	function moveBackward() {
+		console.log("go backward...");
+		// do something with reverselink
+	}
+	
+	function getForwardLink() {
+		var pov = panorama.getPov();
+		var links = panorama.getLinks(); // may be LinksChanged event is better?
+		var nearest = null;
+		var nearest_difference = 360;
+	 
+		for(var i=0; i<links.length; i++) {
+			  var link = links[i];
+			  var difference = getLinkDifference(pov.heading, link.heading);
+			  // console.log(difference, link);
+			  if (difference < nearest_difference) {
+				  nearest = link;
+				  nearest_difference = difference;
+			  } 
+		}
+	 
+		return nearest;
+	}
+	
+	function getLinkDifference(pov_heading, link_heading) {
+		var diff = Math.abs(link_heading - pov_heading) % 360;
+	 
+		return diff >= 180 ? diff - (diff - 180) * 2 : diff;
+	}
+
+	function getBackwardLink(){
+	}
+
+	
+	
     </script>
-    <script async defer
-        src="http://maps.googleapis.com/maps/api/js?callback=initialize">
+    <script async defer src="http://maps.googleapis.com/maps/api/js?callback=initialize">
     </script>
   </body>
 </html>
