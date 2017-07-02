@@ -122,11 +122,16 @@
 	
 	function changeHeading( delta ) {
 		var heading = panorama.getPov().heading;
+		var POV = panorama.getPov(); 
+		POV.heading = heading + delta; 
+		panorama.setPov(POV); 
+		
+		/*
 		panorama.setPov({ heading: heading + delta, pitch: 0 });
 		
 		var markerPanoID = data.location.pano;
 		panorama.setPano(markerPanoID);
-		panorama.setVisible(true); 
+		panorama.setVisible(true); */
 
 	}
 	
@@ -157,8 +162,8 @@
 	}
 	
 	function moveForward(){
-		var nearest = getForwardLink(); 
-		panorama.setPano(nearest); 
+		var nearestPanoID = getForwardLink(); 
+		panorama.setPano(nearestPanoID); 
 		panorama.setVisible(true); 
 	}
 
