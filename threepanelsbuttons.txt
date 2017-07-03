@@ -56,6 +56,15 @@
 			<tr>
 				<input type="button" value="Go Backward" onclick="moveBackward()">
 			</tr>
+			<tr>
+				<input type="button" value="Teleport to USC" onclick="goToUSC()">
+			</tr>
+			<tr>
+				<input type="button" value="Teleport to Western Sydney University" onclick="goToWSU()">
+			</tr>
+			<tr>
+				<input type="button" value="Teleport to Disneyland" onclick="goToDisneyland()">
+			</tr>
 			<table id="links_table"></table>
 		</table></div>
 		
@@ -128,10 +137,12 @@
 		console.log("go forward...");
 		// find most forward link
 		// set panorama to forward link
+		panorama.setPano(); 
 	}
 	function moveBackward() {
 		console.log("go backward...");
 		// do something with reverselink
+		panorama.setPano(); 
 	}
 	
 	function getForwardLink() {
