@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Street View Add Third Panel</title>
+		<style>
+			html, body {
+				height: 100%;
+				margin: 0;
+				padding: 0;
+			}
+			#map {
+				float: left;
+				height: 50%;
+				width: 50%;
+			}
+			#pano {
+				width: 100%;
+				height: 50%;
+			}
+			#floating-panel {
+				float: right;
+				width: 50%;
+				height: 20%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="map"></div>
+		<div id="floating-panel">
+		<table>
+			<tr>
+				<td><b>Position</b></td><td id="position-cell">&nbsp;</td>
+			</tr>
+			<tr>
+				<td><b>POV Heading</b></td><td id="heading-cell">270</td>
+			</tr>
+			<tr>
+				<td><b>POV Pitch</b></td><td id="pitch-cell">0.0</td>
+			</tr>
+			<tr>
+				<td><b>Pano ID</b></td><td id="pano-cell">&nbsp;</td>
+			</tr>
+		</table></div>
+		<p>
+			Push some buttons to explore Maps!
+		</p>
+		<div id="floating-panel">
+		<table>
+			<tr>
+				<input type="button" value="Turn Left" onclick="changeHeading(-90);">
+			</tr>
+			<tr>
+				<input type="button" value="Turn Right" onclick="changeHeading(90);">
+			</tr>
+			<tr>
+				<input type="button" value="Go Forward" onclick="moveForward();">
+			</tr>
+			<tr>
+				<input type="button" value="Go Backward" onclick="changeHeading(-5);">
+			</tr>
+			<table id="links_table"></table>
+		</table></div>
+		
+
+		
+		<div id="pano"></div>
+    <script>
+	
+	var panorama = null; 
+	
+	function initialize() {
+		var fenway = {lat: 42.345573, lng: -71.098326};
+		var map = new google.maps.Map(document.getElementById('map'), {
+			center: fenway,
+			zoom: 14
+		});
+		panorama = new google.maps.StreetViewPanorama(
+			document.getElementById('pano'), {
+				position: fenway,
+				pov: {
+					heading: 34,
+					pitch: 10
+				}
+			});
+		map.setStreetView(panorama);
+		
+		panorama.addListener('pano_changed', function() {
+			var panoCell = document.getElementById('pano-cell');
+			panoCell.innerHTML = panorama.getPano();
+		});
+		panorama.addListener('links_changed', function() {
+			var linksTable = document.getElementById('links_table');
+			while (linksTable.hasChildNodes()) {
+				linksTable.removeChild(linksTable.lastChild);
+			}
+			var links = panorama.getLinks();
+			for (var i in links) {
+				var row = document.createElement('tr');
+				linksTable.appendChild(row);
+				var labelCell = document.createElement('td');
+				labelCell.innerHTML = '<b>Link: ' + i + '</b>';
+				var valueCell = document.createElement('td');
+				valueCell.innerHTML = links[i].description;
+				linksTable.appendChild(labelCell);
+				linksTable.appendChild(valueCell);
+			}
+		});
+		panorama.addListener('position_changed', function() {
+			var positionCell = document.getElementById('position-cell');
+			positionCell.firstChild.nodeValue = panorama.getPosition() + '';
+		});
+		panorama.addListener('pov_changed', function() {
+			var headingCell = document.getElementById('heading-cell');
+			var pitchCell = document.getElementById('pitch-cell');
+			headingCell.firstChild.nodeValue = panorama.getPov().heading + '';
+			pitchCell.firstChild.nodeValue = panorama.getPov().pitch + '';
+		});
+		
+	
+	}
+	
+	function changeHeading( delta ) {
+		var heading = panorama.getPov().heading;
+		var POV = panorama.getPov(); 
+		POV.heading = heading + delta; 
+		panorama.setPov(POV); 
+
+	}
+	
+	function getForwardLink() {
+		var pov = panorama.getPov();
+		var links = panorama.getLinks();
+		var len = links.length;
+		var nearest = null;		// pano id closest to facing
+		var nearest_difference = 360;
+		
+		for(var i=0; i<len; i++) {
+			var link = links[i];
+			var difference = getLinkDifference(pov.heading, link.heading);
+			console.log(difference, link);
+			if (difference < nearest_difference) {
+				nearest = link;
+				nearest_difference = difference;
+			} 
+		}
+		
+		return nearest;
+	}
+	
+	function getLinkDifference(pov_heading, link_heading) {
+		var diff = Math.abs(link_heading - pov_heading) % 360;
+	 
+		return diff >= 180 ? diff - (diff - 180) * 2 : diff;
+	}
+	
+	function moveForward(){
+		var nearestPanoID = getForwardLink(); 
+		panorama.setPano(nearestPanoID); 
+		panorama.setVisible(true); 
+	}
+
+	//function getBackwardLink(){
+	//}
+
+	
+ 
+
+	
+	
+    </script>
+    <script async defer
+        src="http://maps.googleapis.com/maps/api/js?callback=initialize">
+    </script>
+  </body>
+</html>
