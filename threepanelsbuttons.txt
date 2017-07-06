@@ -134,6 +134,9 @@
 		panorama.setPov({ heading: heading + delta, pitch: 0 });
 	}
 	function moveForward() {
+		var nearestPanoID = getForwardLink(); 
+		panorama.setPano(nearestPanoID); 
+		panorama.setVisible(true); 
 		console.log("go forward...");
 		// find most forward link
 		// set panorama to forward link
