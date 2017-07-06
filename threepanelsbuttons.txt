@@ -175,18 +175,20 @@
 	
 	function goToUSC(){
 		panorama.setPano("CAoSLEFGMVFpcFBuZG9iRTRuNVdvMUo2cEV0bkN2S1poVXlVUmxPakVJeDZsajlw");
-		panorama.setHeading({heading:0, pitch: 0});
+		panorama.setPov({heading:0, pitch: 0});
+		
+		// set the map center (lat long) to the new pano's position 
 
 	}
 	
 	function goToSydney(){
 		panorama.setPano("E045SvTR9OoV1Sh14Fpt0A");
-		panorama.setHeading({heading:0, pitch: 0});
+		panorama.setPov({heading:0, pitch: 0});
 	}
 	
 	function goToDisneyland(){
 		panorama.setPano("CAoSLEFGMVFpcE1zYXo0bjJxVHRPNEpSSUpIaUU5ZzY5aGoxZHZKQjVSQmI0dHNj");
-		panorama.setHeading({heading:0, pitch: 0});
+		panorama.setPov({heading:0, pitch: 0});
 	}
 	
 	
