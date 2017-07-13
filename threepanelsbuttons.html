@@ -135,6 +135,7 @@
 	}
 	function moveForward() {
 		var nearestPanoID = getForwardLink(); 
+		alert("got the nearestPanoID"); 
 		panorama.setPano(nearestPanoID); 
 		panorama.setVisible(true); 
 		console.log("go forward...");
@@ -150,21 +151,28 @@
 	
 	function getForwardLink() {
 		var pov = panorama.getPov();
+		console.log(pov); 
 		var links = panorama.getLinks(); // may be LinksChanged event is better?
+		console.log(links); 
 		var nearest = null;
 		var nearest_difference = 360;
 	 
 		for(var i=0; i<links.length; i++) {
 			  var link = links[i];
+			  console.log(link); 
 			  var difference = getLinkDifference(pov.heading, link.heading);
+			  console.log(difference); 
 			  // console.log(difference, link);
 			  if (difference < nearest_difference) {
 				  nearest = link;
+				  console.log(nearest); 
 				  nearest_difference = difference;
+				  console.log(nearest_difference); 
 			  } 
 		}
-	 
-		return nearest;
+		 
+		var nearestID = nearest.pano; 
+		return nearestID;
 	}
 	
 	function getLinkDifference(pov_heading, link_heading) {
@@ -172,6 +180,7 @@
 	 
 		return diff >= 180 ? diff - (diff - 180) * 2 : diff;
 	}
+	
 	function getBackwardLink(){
 	}
 	
