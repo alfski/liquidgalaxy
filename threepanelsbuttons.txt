@@ -135,24 +135,21 @@
 	}
 	function moveForward() {
 		var nearestPanoID = getForwardLink(); 
-		alert("got the nearestPanoID"); 
 		panorama.setPano(nearestPanoID); 
 		panorama.setVisible(true); 
-		console.log("go forward...");
-		// find most forward link
-		// set panorama to forward link
 		panorama.setPano(); 
 	}
 	function moveBackward() {
-		console.log("go backward...");
-		// do something with reverselink
+		var nearestPanoID = getBackwardLink(); 
+		panorama.setPano(nearestPanoID); 
+		panorama.setVisible(true); 
 		panorama.setPano(); 
 	}
 	
 	function getForwardLink() {
 		var pov = panorama.getPov();
 		console.log(pov); 
-		var links = panorama.getLinks(); // may be LinksChanged event is better?
+		var links = panorama.getLinks(); 
 		console.log(links); 
 		var nearest = null;
 		var nearest_difference = 360;
@@ -160,7 +157,7 @@
 		for(var i=0; i<links.length; i++) {
 			  var link = links[i];
 			  console.log(link); 
-			  var difference = getLinkDifference(pov.heading, link.heading);
+			  var difference = getForwardLinkDifference(pov.heading, link.heading);
 			  console.log(difference); 
 			  // console.log(difference, link);
 			  if (difference < nearest_difference) {
@@ -175,13 +172,42 @@
 		return nearestID;
 	}
 	
-	function getLinkDifference(pov_heading, link_heading) {
+	function getForwardLinkDifference(pov_heading, link_heading) {
 		var diff = Math.abs(link_heading - pov_heading) % 360;
 	 
 		return diff >= 180 ? diff - (diff - 180) * 2 : diff;
 	}
 	
+	function getBackwardLinkDifference(pov_heading, link_heading) {
+		var diff = Math.abs(link_heading - pov_heading) % 360;
+	 
+		return diff >= 180 ? diff + (diff - 180) * 2 : diff;
+	}
+	
 	function getBackwardLink(){
+		var pov = panorama.getPov();
+		console.log(pov); 
+		var links = panorama.getLinks(); 
+		console.log(links); 
+		var nearest = null;
+		var nearest_difference = 360;
+	 
+		for(var i=0; i<links.length; i++) {
+			  var link = links[i];
+			  console.log(link); 
+			  var difference = getBackwardLinkDifference(pov.heading, link.heading);
+			  console.log(difference); 
+			  // console.log(difference, link);
+			  if (difference < nearest_difference) {
+				  nearest = link;
+				  console.log(nearest); 
+				  nearest_difference = difference;
+				  console.log(nearest_difference); 
+			  } 
+		}
+		 
+		var nearestID = nearest.pano; 
+		return nearestID;
 	}
 	
 	
