@@ -15,13 +15,19 @@
 				width: 50%;
 			}
 			#pano {
-				width: 100%;
+				width: 50%;
 				height: 50%;
+				float: left; 
 			}
 			#floating-panel {
 				float: right;
 				width: 50%;
-				height: 20%;
+				height: 50%;
+			}
+			#daydream {
+				float: right; 
+				width: 50%;
+				height: 50%;
 			}
 		</style>
 	</head>
@@ -41,8 +47,10 @@
 			<tr>
 				<td><b>Pano ID</b></td><td id="pano-cell">&nbsp;</td>
 			</tr>
-		</table></div>
-		<div id="floating-panel">
+		</table>
+		
+		<br/><br/><br/>
+		
 		<table>
 			<tr>
 				<input type="button" value="Turn Left" onmouseover="moveHeading(-0.2)" onmouseout="stopHeading()">
@@ -69,6 +77,18 @@
 		</table></div>
 		
 		<div id="pano"></div>
+		
+		<div id="daydream">
+		
+			<!--Daydream-->
+			<h1>Daydream Configuration!</h1>
+			<button id="button">CONNECT</button><span id="message"></span><br /><br />
+			<!--<textarea id="textarea" rows="23" cols="50"></textarea>-->
+			<!--<canvas id="canvas" width="400", height="300"></canvas><br /><br />-->
+			(Hold home key for 1 second to recenter)<br /><br />
+		
+		</div>
+		
     <script>
 	
 	var panorama, headingTimer = null;
