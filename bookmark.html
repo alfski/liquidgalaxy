@@ -93,6 +93,7 @@
     <script>
 	
 	var panorama, headingTimer = null;
+	var bookmarks = {}; 
 	
 	function initialize() {
 		var fenway = {lat: 42.345573, lng: -71.098326};
@@ -161,16 +162,19 @@
 	
 	function moveForward() {
 		var nearestPanoID = getForwardLink(); 
-		panorama.setPano(nearestPanoID); 
-		panorama.setVisible(true); 
-		panorama.setPano(); 
+		panorama.setPano(nearestPanoID);
+		// also set google map.center(); 
 	}
 	
 	function moveBackward() {
 		var nearestPanoID = getBackwardLink(); 
 		panorama.setPano(nearestPanoID); 
-		panorama.setVisible(true); 
-		panorama.setPano(); 
+		// also set google map.center(); 
+		// have to recover the pano - get the position (
+		// Lat/long and tell the google maps to go to that
+		// lat long 
+		// google map.center(panorama.getPosition()); 
+		// so every time you set pano, set center as well
 	}
 	
 	function getForwardLink() {
@@ -184,7 +188,7 @@
 		for(var i=0; i<links.length; i++) {
 			  var link = links[i];
 			  console.log(link); 
-			  var difference = getForwardLinkDifference(pov.heading, link.heading);
+			  var difference = getLinkDifference(pov.heading, link.heading);
 			  console.log(difference); 
 			  // console.log(difference, link);
 			  if (difference < nearest_difference) {
@@ -197,18 +201,7 @@
 		 
 		var nearestID = nearest.pano; 
 		return nearestID;
-	}
-	
-	function getForwardLinkDifference(pov_heading, link_heading) {
-		var diff = Math.abs(link_heading - pov_heading) % 360;
-	 
-		return diff >= 180 ? diff - (diff - 180) * 2 : diff;
-	}
-	
-	function getBackwardLinkDifference(pov_heading, link_heading) {
-		var diff = Math.abs(link_heading - pov_heading) % 360;
-	 
-		return diff >= 180 ? diff + (diff - 180) * 2 : diff;
+		
 	}
 	
 	function getBackwardLink(){
@@ -216,28 +209,33 @@
 		console.log(pov); 
 		var links = panorama.getLinks(); 
 		console.log(links); 
-		var nearest = null;
-		var nearest_difference = 360;
+		var furthest = null;
+		var furthest_difference = 360; 
 	 
 		for(var i=0; i<links.length; i++) {
 			  var link = links[i];
 			  console.log(link); 
-			  var difference = getBackwardLinkDifference(pov.heading, link.heading);
+			  var difference = getLinkDifference(pov.heading, link.heading);
 			  console.log(difference); 
+			  console.log(furthest_difference); 
 			  // console.log(difference, link);
-			  if (difference < nearest_difference) {
-				  nearest = link;
-				  console.log(nearest); 
-				  nearest_difference = difference;
-				  console.log(nearest_difference); 
+			  if (difference > furthest_difference) {
+				  furthest = link;
+				  console.log(furthest); 
+				  furthest_difference = difference;
+				  console.log(furthest_difference); 
 			  } 
 		}
 		 
-		var nearestID = nearest.pano; 
-		return nearestID;
+		var furthestID = furthest.pano; 
+		return furthestID;
 	}
 	
-	
+	function getLinkDifference(pov_heading, link_heading) {
+		var diff = Math.abs(link_heading - pov_heading) % 360;
+	 
+		return diff >= 180 ? diff - (diff - 180) * 2 : diff;
+	}
 		
 	function goToBookmark(bookmarkNumber){
 		<!-- Bookmarks -->
@@ -256,21 +254,22 @@
 		var bookmark3 = {
 			title: 'Disneyland',
 			pano: 'CAoSLEFGMVFpcE1zYXo0bjJxVHRPNEpSSUpIaUU5ZzY5aGoxZHZKQjVSQmI0dHNj',
-			heading: 0
+			heading: 45
 		};
 		
-		var bookmarks = [bookmark1, bookmark2, bookmark3]; 
+		bookmarks = [bookmark1, bookmark2, bookmark3]; 
 		
-		panorama.setPano(bookmarks[bookmarkNumber].pano);
-		panorama.setPov({heading:bookmarks[bookmarkNumber].pano, pitch: 0});
-		
+		panorama.setOptions({
+			pano: bookmarks[bookmarkNumber].pano,
+			heading:bookmarks[bookmarkNumber].heading
+		} ); 
 
 	}
 	
 	
 	
 	<!--Daydream Stuff-->
-	if ( 'bluetooth' in navigator === false ) {
+	/*if ( 'bluetooth' in navigator === false ) {
 				button.style.display = 'none';
 				message.innerHTML = 'This browser doesn\'t support the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API" target="_blank">Web Bluetooth API</a> :(';
 			}
@@ -387,7 +386,7 @@
 				requestAnimationFrame( animate );
 			}
 			requestAnimationFrame( animate );
-	
+	*/
     </script>
     <script async defer src="http://maps.googleapis.com/maps/api/js?callback=initialize">
     </script>
