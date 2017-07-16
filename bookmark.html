@@ -135,6 +135,8 @@
 		panorama.addListener('position_changed', function() {
 			var positionCell = document.getElementById('position-cell');
 			positionCell.firstChild.nodeValue = panorama.getPosition() + '';
+			latlong = panorama.getPosition(); // get the lat long position of the current panorama
+			map.setCenter( latlong ); // update the google map center.
 		});
 		panorama.addListener('pov_changed', function() {
 			var headingCell = document.getElementById('heading-cell');
