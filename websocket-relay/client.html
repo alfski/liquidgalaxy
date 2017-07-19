@@ -1,0 +1,65 @@
+<html>
+<head>
+<script>
+
+var wsUri = "ws://127.0.0.1:3000/relay"; // change 127.0.0.1 to the IP of laptop
+var websocket;
+
+function init() {
+  output = document.getElementById("output");
+  startWebSocket();
+}
+
+function startWebSocket() {
+
+  websocket = new WebSocket(wsUri);
+
+  websocket.onopen = function(evt) { onOpen(evt) };
+  websocket.onclose = function(evt) { onClose(evt) };
+  websocket.onmessage = function(evt) { onMessage(evt) };
+  websocket.onerror = function(evt) { onError(evt) };
+}
+
+function onOpen(evt) {
+  writeToPage("RELAY CONNECTED");
+}
+
+function onClose(evt) {
+  writeToPage("DISCONNECTED");
+}
+
+function onMessage( evt ) {
+  var mesg = evt.data;
+  writeToPage('<span style="color: blue;">RECVD: ' + mesg + '</span>');
+}
+
+function onError(evt) {
+  writeToPage('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
+
+function doSend(message) {
+  writeToPage("SENT: " + message);
+  websocket.send(message);
+}
+
+function writeToPage(message) {
+  var pre = document.createElement("p");
+  pre.style.wordWrap = "break-word";
+  pre.innerHTML = message;
+  output.appendChild(pre);
+}
+
+</script>
+</head>
+<body onLoad='init()';>
+<h1>WebSocket Relay Example</h1>
+
+<form action='javascript:doSend(document.getElementById("mesg").value)'>
+<input id='mesg' type='text' name='mesg'>
+<input type='submit' value='Send Message'>
+</form>
+
+<div id='output'></div>
+
+</body>
+</html>
