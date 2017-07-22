@@ -5,6 +5,7 @@
 // 20160825 Ali (17433668) websocket-relay.pl converted to javascript/NodeJS
 // 20161010 Jon Record Function
 // 20161108 Alf strip back & refactor, correct broken client id, use client address + port
+// 20170716 Alf remove protobuf and binary websocket code, added package.json
 
 var DEBUG = true,
     HTTP = require('http'),
