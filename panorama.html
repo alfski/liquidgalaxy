@@ -59,10 +59,10 @@
 				<input type="button" value="Go Backward" onclick="moveBackward()">
 			</tr>
 			<tr>
-				<input type="button" value="Look Up" onclick="lookUp()">
+				<input type="button" value="Look Up" onmouseover="movePitch(0.2)" onmouseout="stopPitch()">
 			</tr>
 			<tr>
-				<input type="button" value="Look Down" onclick="lookDown()">
+				<input type="button" value="Look Down" onmouseover="movePitch(-0.2)" onmouseout="stopPitch()">
 			</tr>
 			<tr>
 				<input type="button" value="Teleport to USC" onclick="goToBookmark(0)">
@@ -82,7 +82,7 @@
 	<script src="DaydreamController.js"></script>
     <script>
 	
-	var panorama, headingTimer = null;
+	var panorama, headingTimer, pitchTimer = null;
 	var bookmarks = {}; 
 	
 	function initialize() {
@@ -228,9 +228,24 @@
 	 
 		return diff >= 180 ? diff - (diff - 180) * 2 : diff;
 	}
+	
+	function movePitch( delta ) {
+		clearInterval( pitchTimer );
+		pitchTimer = setInterval( function(){ changePitch( delta )}, 1000/60 );
+    }
+	
+	function stopPitch() {
+		clearInterval( pitchTimer);
+    }
+	
+	function changePitch(delta){
+		var heading = panorama.getPov().heading;
+		var pitch = panorama.getPov().pitch;
+		console.log(pitch); 
+		panorama.setPov({ heading: heading + delta, pitch: pitch + delta });
+	}
 		
 	function goToBookmark(bookmarkNumber){
-		
 		panorama.setOptions({
 			pano: bookmarks[bookmarkNumber].pano,
 			heading:bookmarks[bookmarkNumber].heading
